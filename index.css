@@ -1,0 +1,29 @@
+
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+
+  #container { background-image: url("https://www.alliance-travel.org/wp-content/uploads/2022/08/musique-du-monde.jpg");
+/* Full height */
+height: 100%; 
+
+/* Center and scale the image nicely */
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;}
+
+#mood-input {
+    width: 260px;
+    height: 40px;
+    font-size: 20px;
+    padding: 10px;
+    border: 1px solid;
+border-radius: 12px;}
+
+
+    #song-output {
+        margin-top: 20px;
+        font-size: 24px;
+        color: green;
+      }
