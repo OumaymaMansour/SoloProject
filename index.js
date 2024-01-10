@@ -1,5 +1,16 @@
 
-
+var each = function (coll, func) {
+    if (Array.isArray(coll)) {
+        for (var i = 0; i < coll.length; i++) {
+            func(coll[i], i)
+        }
+    }
+    else {
+        for (var key in coll) {
+            func(coll[key], key)
+        }
+    }
+}
 
 
 
@@ -7,75 +18,136 @@
 //var mood = moodInput.val().toLowerCase().trim();
 
 
-$("#mood-button").on( "click", function() {
+$("#mood-button").click(function () {
 
-    console.log($("#mood-input").val().toLowerCase().trim())
-
-})
-
+    var mood = $("#mood-input").val().toLowerCase().trim()
+    reset_playlist();
 
 
-function Playsit(gategory,quote) {
-    var inst = {};
+    playlist_happy = [
+        {
+            title: "Pharell Williams - Happy",
+            audio_url: "audio/pharell_williams_happy.mp3",
+            image_url: "photos/pharell_williams_happy.jpg"
+            
+        },
+        {
+            title: "Meghan Trainor - Better When I'm Dancin",
+            audio_url: "audio/meghan_trainor_better_when_im_dancin.mp3",
+            image_url: "photos/meghan_trainor_better_when_im_dancin.jpeg"
+        },
+        {
+            title: "Bruno Mars - Just the way you are",
+            audio_url: "audio/bruno_mars_just_the_way_you_are.mp3",
+            image_url: "photos/bruno_mars_just_the_way_you_are.jpeg"
+        }
+    ];
 
-    inst.quote = quote
-    inst.category = category
-    inst.songsToPlay = [];
-    inst.playedSongsList = [];
-    inst.nextSong = {};
-    inst.currentSong = {};
-    inst.lastPlayedSong = {};
-    inst.addSong = addSong;
-    inst.playCurrentSong = playCurrentSong;
+    playlist_sad = [
+        {
+            title: "Dean Lewis - How Do I Say Goodbye ",
+            audio_url: "audio/Dean Lewis - How Do I Say Goodbye (Official Video).mp3",
+            image_url: "photos/How Do I Say Goodbye_Dean Lewis.jpg"
+            
+        },
+        {
+            title: "Calum Scott - You Are The Reason",
+            audio_url: "audio/Calum Scott - You Are The Reason (Official Video).mp3",
+            image_url: "photos/Calum Scott - You Are The Reason.jpeg"
+        },
+        {
+            title: "This Song Gave Me The Strength To Fight One More Day",
+            audio_url: "audio/This Song Gave Me The Strength To Fight One More Day.mp3",
+            image_url: "photos/I won't give up.jpeg"
+        }
+    ];
 
-    return inst;
-  }
+    playlist_angry = [
+        {
+            title: "Lola Blanc - Angry Too",
+            audio_url: "audio/Lola Blanc - Angry Too (Official Video).mp3",
+            image_url: "photos/Lola Blanc - Angry Too.jpeg"
+            
+        },
+        {
+            title: "Adele - Rolling in the Deep",
+            audio_url: "audio/Adele - Rolling in the Deep (Official Music Video).mp3",
+            image_url: "photos/Adele - Rolling in the Deep.jpg"
+        },
+        {
+            title: "You call it revenge, I call it returning the favor",
+            audio_url: "audio/You call it revenge, I call it returning the favor. ( A villain playlist).mp3",
+            image_url: "photos/You call it revenge, I call it returning the favor.jpg"
+        }
+    ];
 
-  function addSong (song,category) {
-    if(this.category===category)
-    this.songsToPlay.push(song);
-  }
 
-  function playCurrentSong () {
-    var current = this.songsToPlay.shift();
-    if (Object.keys(this.currentSong).length !== 0) {
-      console.log(Object.keys(this.currentSong));
-      this.lastPlayedSong = this.currentSong;
-      this.playedSongsList.push(this.currentSong);
+
+    playlists = {
+        happy: playlist_happy,
+        sad : playlist_sad,
+        angry : playlist_angry
+    };
+
+    if (mood) {
+        
+        if(!playlists.hasOwnProperty(mood)){
+            $('#songOutput').text("Please enter a valid mood.");
+            return;
+        }
+        $('#playlist_title').text($("#mood-input").val())
+        playlist_mood = playlists[mood];
+        
+
+    each(playlist_mood, function(element) {
+        var listItem = '<li data-src="' + element.audio_url + '"><img class="preview_img" src="' + element.image_url + '"></img> <label><h4>' + element.title + '</label></h4></li>';
+        $('#playlist').append(listItem);
+    });
+
+        $('#audio_player').show();
+        var audioPlayer = document.getElementById('audio-player');
+        var playlistItems = $('#playlist li');
+
+        // Set the initial source of the audio player
+        audioPlayer.src = playlistItems.eq(0).data('src');
+
+        // Play the first audio when the page loads
+        audioPlayer.play();
+
+        // Play selected audio from the playlist
+        playlistItems.click(function () {
+            var audioSrc = $(this).data('src');
+            audioPlayer.src = audioSrc;
+            audioPlayer.play();
+        });
+
+        // Update the playlist and play the next audio when the current one ends
+        audioPlayer.addEventListener('ended', function () {
+            var nextIndex = playlistItems.filter('.active').index() + 1;
+            if (nextIndex < playlistItems.length) {
+                playlistItems.removeClass('active');
+                playlistItems.eq(nextIndex).addClass('active');
+                audioPlayer.src = playlistItems.eq(nextIndex).data('src');
+                audioPlayer.play();
+            }
+        });
+
+    } else {
+        // Display an error message using jQuery html() method
+        $('#songOutput').text("Please enter a valid mood.");
     }
-    this.currentSong = current;
-  }
-  
-  var ListHappiness = Playsit('Happy',"be happy bright be you");
-  
 
-  function makeSong (title,artist,youtube,category) {
-return {title:title,
-        artist:artist,
-        youtube:youtube,
-        category:category}
-  }
+});
 
-  var songH1 = makeSong("HAPPY","Pharrell Williams","https://www.youtube.com/watch?v=JRMOMjCoR58", "HAPPY")
-  var songH2 = makeSong("Just The Way You Are","Bruno Mars","https://www.youtube.com/watch?v=u7XjPmN-tHw","HAPPY")
-  var songH3 = makeSong("Better When I'm Dancin'","Meghan Trainor ","https://www.youtube.com/watch?v=pkCyfBibIbI","HAPPY")
-  
-  var songsH =[songH1,songH2,songH3]
+function reset_playlist() {
+    var audioPlayer = document.getElementById('audio-player');
+    audioPlayer.pause();
 
-  var ListSadness = Playsit('SAD',"It's okay not to be okay.");
+    $('#audio_player').hide();
+    $('#playlist').empty();
+     $('#songOutput').empty();
 
-  var songS1 = makeSong("How Do I Say Goodbye"," Dean Lewis","https://www.youtube.com/watch?v=QCtEe-zsCtQ", "SAD")
-  var songS2 = makeSong("You Are The Reason","Calum Scott","https://www.youtube.com/watch?v=ShZ978fBl6Y","SAD")
-  var songS3 = makeSong("The Strength To Fight","One More Day","https://www.youtube.com/watch?v=ooOak5FVkpM","SAD")
- 
-  
-  var songsH =[songS1,songS2,songS3]
 
-  var ListAnger = Playsit('ANGRY',"You are the first victim of your own anger. ...");
+}
 
-  var songA1 = makeSong("Angry Too","Lola Blanc","https://www.youtube.com/watch?v=mwzHGbFNW1I", "ANGRY")
-  var songA2 = makeSong("You call it revenge, I call it returning the favor","A villain playlist","https://www.youtube.com/watch?v=EuwOAKLvGmc","ANGRY")
-  var songA3 = makeSong("Rolling in the Deep","Adele","https://www.youtube.com/watch?v=rYEDA3JcQqw&list=PL7v1FHGMOadBhCjuh_ljEEhqrQKCBsoIn","ANGRY")
 
-  var songsA =[songA1,songA2,songA3]
-  

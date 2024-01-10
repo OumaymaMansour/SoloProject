@@ -1,18 +1,51 @@
 
-body, html {
-    height: 100%;
+body {
     margin: 0;
-  }
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('background-image.jpg');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+}
 
-  #container { background-image: url("https://www.alliance-travel.org/wp-content/uploads/2022/08/musique-du-monde.jpg");
-/* Full height */
-height: 100%; 
+/* Add more styles for your content container, music player, etc. */
+#content {
+    text-align: center;
+}
 
-/* Center and scale the image nicely */
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;}
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
 
+p {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+}
+
+/* Add your music player styling here */
+
+/* Example animation for a music player button */
+.play-button {
+    cursor: pointer;
+    background-color: #1db954;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.play-button:hover {
+    background-color: #25a05e;
+}
 #mood-input {
     width: 260px;
     height: 40px;
@@ -27,3 +60,29 @@ border-radius: 12px;}
         font-size: 24px;
         color: green;
       }
+      .preview_img {
+        height: 200px;
+        width: 200px;
+      }
+
+      #playlist {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Style for the list items */
+    #playlist li {
+        margin-right: 10px; /* Add some spacing between items */
+        padding: 8px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Style for the list items on hover */
+    #playlist li:hover {
+        background-color: #4e3030;
+    }
